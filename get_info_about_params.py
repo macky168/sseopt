@@ -1,9 +1,9 @@
 import numpy as np
 
 
-def get_max_params(current_lst, current_fitness_lst):
+def get_max_params(current_lst, current_fitness_lst, keys):
     max_index = current_fitness_lst.index(max(current_fitness_lst))
-    return current_lst[max_index]
+    return [getattr(current_lst[max_index], key) for key in keys]
 
 
 def get_max_fitness(current_fitness_lst):
