@@ -82,7 +82,6 @@ class SSEOpt:
         self.params = params
         self.keys = [key for key in params.keys()]
         for key in self.keys:
-            print(key)
             setattr(params_comb, key, "")
             setattr(common_schema, key, [])
             
@@ -337,10 +336,10 @@ class SSEOpt:
         return individual
     
     def is_params_comb_same(self, a, b):
-        result = False
+        result = True
         for key in self.keys:
-            if getattr(a, key) == getattr(b, key):
-                result = True
+            if getattr(a, key) != getattr(b, key):
+                result = False
                 break
         return result
        
