@@ -1,5 +1,5 @@
 import random
-
+import math
 import numpy as np
 
 SCALE = 0.15
@@ -44,8 +44,8 @@ class discrete:
         original_value = 12
         ↓
         candidates_lst_len = 4
-        rand = -0.26 (normal distribution)
-        ↓ (by normal distribution)
+        rand = -0.23 (normal distribution)
+        ↓
         added value = -1
         ↓
         return 12 * (-1*2) = 10
@@ -55,9 +55,9 @@ class discrete:
         while value <= self.max_value:
             candidates_lst_len += 1
             value += self.step
-        
+                
         rand = np.random.normal(loc=0.0, scale=SCALE, size=1).tolist()[0]
-        added_value = round(rand * candidates_lst_len)
+        added_value = math.floor(rand * candidates_lst_len + 0.5)
         
         if (self.min_value < float(added_value)*float(self.step) + original_value and 
             float(added_value)*float(self.step) + original_value < self.max_value):
@@ -105,8 +105,8 @@ class discrete_int:
             value += self.step
         
         rand = np.random.normal(loc=0.0, scale=SCALE, size=1).tolist()[0]
-        added_value = round(rand * candidates_lst_len)
-            
+        added_value = math.floor(rand * candidates_lst_len + 0.5)
+        
         if (self.min_value < float(added_value)*float(self.step) + original_value and 
             float(added_value)*float(self.step) + original_value < self.max_value):
             original_value += added_value*self.step
