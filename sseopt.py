@@ -57,6 +57,7 @@ Grad. School of Informatics, Nagoya University
 ver1.0, Aug. 27 2020
 ver1.1. Nov. 18 2020 | not make file, but return list at visualize function.
 ver2.0. Jan. 24 2021 | you can choose categorical- or discrete-coded. more sophisticated coding.
+ver2.1. Feb. 21 2021 | error fixed in minimizing problem
 """
 
 
@@ -303,16 +304,19 @@ class SSEOpt:
                     next_lst[i] = copy.deepcopy(
                         mutate_normal(next_lst[i], self.params, self.keys, self.rate_of_mutation))
                 
-        max_index = best_fitness_lst.index(max(best_fitness_lst))
-
+        if self.maximizing:
+            best_index = best_fitness_lst.index(max(best_fitness_lst))
+        else:
+            best_index = best_fitness_lst.index(min(best_fitness_lst))
+            
         if self.history == 2:
-            return best_params_lst[max_index], best_fitness_lst[max_index],\
+            return best_params_lst[best_index], best_fitness_lst[best_index],\
                    best_fitness_lst, worst_fitness_lst, mean_fitness_lst, median_fitness_lst, sd_fitness_lst,\
                    search_history_lst
         elif self.history == 1:
-            return best_params_lst[max_index], best_fitness_lst[max_index]
+            return best_params_lst[best_index], best_fitness_lst[best_index]
         elif self.history == 0:
-            return best_params_lst[max_index]
+            return best_params_lst[best_index]
 
     def output_fitness(self, params_comb_temp):
         fitness = self.objective(params_comb_temp)
