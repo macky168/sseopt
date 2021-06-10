@@ -331,8 +331,13 @@ class SSEOpt:
             params_lst = []
             for p in params_combs_lst:
                 params_lst.append(getattr(p, key))
-            params_set = list(set(params_lst))
-            setattr(common_schema_temp, key, params_set)
+                
+            params_lst_without_duplication = []
+            for x in params_lst:
+                if x not in params_lst_without_duplication:
+                    params_lst_without_duplication.append(x)
+        
+            setattr(common_schema_temp, key, params_lst_without_duplication)
         return common_schema_temp
     
     def make_individual(self, common_schemata):
