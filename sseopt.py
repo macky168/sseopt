@@ -3,6 +3,7 @@ import random
 import datetime
 
 import numpy as np
+import tensorflow as tf
 import pandas as pd
 
 from .mutate import mutate_normal, mutate_rank_base
@@ -59,6 +60,7 @@ ver1.1. Nov. 18 2020 | not make file, but return list at visualize function.
 ver2.0. Jan. 24 2021 | you can choose categorical- or discrete-coded. more sophisticated coding.
 ver2.1. Feb. 21 2021 | error fixed in minimizing problem
 ver2.2. Mar. 04 2021 | error fixed in fixing random-seed
+ver2.3. Jun. 10 2021 | keep order of common schema
 """
 
 
