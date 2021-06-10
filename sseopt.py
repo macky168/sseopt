@@ -58,6 +58,7 @@ ver1.0, Aug. 27 2020
 ver1.1. Nov. 18 2020 | not make file, but return list at visualize function.
 ver2.0. Jan. 24 2021 | you can choose categorical- or discrete-coded. more sophisticated coding.
 ver2.1. Feb. 21 2021 | error fixed in minimizing problem
+ver2.2. Mar. 04 2021 | error fixed in fixing random-seed
 """
 
 
@@ -102,6 +103,8 @@ class SSEOpt:
         self.verbose = verbose
 
         random.seed(seed)
+        np.random.seed(seed)
+        tf.random.set_seed(seed)
         
     def fit(self):
         current_lst = [[] for pop in range(self.population)]
