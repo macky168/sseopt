@@ -38,11 +38,10 @@ class discrete:
         
     def select(self):
         candidates_lst = []
-        value = decimal.Decimal(str(self.min_value)).quantize(decimal.Decimal(str(self.rounding_target))) # rounding
-        while value <= self.max_value:
+        value = self.min_value  # rounding
+        while decimal.Decimal(str(value)).quantize(decimal.Decimal(str(self.rounding_target))) <= decimal.Decimal(str(self.max_value)).quantize(decimal.Decimal(str(self.rounding_target))):
             candidates_lst.append(value)
             value += self.step
-            value = decimal.Decimal(str(self.min_value)).quantize(decimal.Decimal(str(self.rounding_target)))
             
         return random.choice(candidates_lst)
     
