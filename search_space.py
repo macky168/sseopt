@@ -1,6 +1,7 @@
 import random
 import math
 import numpy as np
+import decimal
 
 SCALE = 0.15
 
@@ -26,28 +27,40 @@ class discrete:
         self.max_value = max_value
         self.step = step
         
+        float_part_min, _ = math.modf(min_value)
+        float_part_max, _ = math.modf(max_value)
+        
+        if len(float_part_min) < len(float_part_max):
+            self.rounding_target = max_value
+        else:
+            self.rounding_target = min_value
+
+        
     def select(self):
         candidates_lst = []
-    
-        value = self.min_value
+        value = decimal.Decimal(self.min_value).quantize(decimal.Decimal(self.rounding_target)) # rounding
         while value <= self.max_value:
             candidates_lst.append(value)
             value += self.step
+            value = decimal.Decimal(self.min_value).quantize(decimal.Decimal(self.rounding_target))
             
         return random.choice(candidates_lst)
     
     def mutate(self, original_value):
         """
         <example>
-        
+        i)
         min_value = 10, max_value = 16, step = 2
         original_value = 12
-        ↓
+
+        ii)
         candidates_lst_len = 4
         rand = -0.23 (normal distribution)
-        ↓
+
+        iii)
         added value = -1
-        ↓
+
+        iv)
         return 12 * (-1*2) = 10
         """
         candidates_lst_len = 0

@@ -61,6 +61,7 @@ ver2.0. Jan. 24 2021 | you can choose categorical- or discrete-coded. more sophi
 ver2.1. Feb. 21 2021 | error fixed in minimizing problem
 ver2.2. Mar. 04 2021 | error fixed in fixing random-seed
 ver2.3. Jun. 10 2021 | keep order of common schema
+ver2.4. Aug. 07 2021 | rounding eroor fixed at discrete search space
 """
 
 
