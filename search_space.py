@@ -30,7 +30,7 @@ class discrete:
         float_part_min, _ = math.modf(min_value)
         float_part_max, _ = math.modf(max_value)
         
-        if len(float_part_min) < len(float_part_max):
+        if len(str(float_part_min)) < len(str(float_part_max)):
             self.rounding_target = max_value
         else:
             self.rounding_target = min_value
