@@ -30,7 +30,7 @@ SSEopt is particularly good at large combinatorial optimization problems in disc
    
 
 ## Licence
-[MIT](https://github.com/macky168/sseopt/LICENCE.txt)
+[MIT](https://github.com/macky168/sseopt/blob/main/LICENCE.txt)
 
 ## Reference
 [1] A. N. Aizawa, “Evolving SSE: A stochastic schemata exploiter,” in Proceedings of the first IEEE conference on evolutionary computation. IEEE world congress on computational intelligence, 1994, pp. 525–529.
