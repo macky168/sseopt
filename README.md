@@ -14,7 +14,7 @@ SSEopt is particularly good at large combinatorial optimization problems in disc
 ## Usage
 
     from sseopt import search_space
-    params = {
+    params_range = {
         'x1': search_space.categorical(['relu', 'tanh']), # list(candidates)
         'x2': search_space.discrete(-1.0, 1.0, 0.2), # min, max, step
         'x3': search_space.discrete_int(-4, 2), # min, max
