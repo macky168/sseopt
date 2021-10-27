@@ -1,20 +1,79 @@
 import sseopt
 from sseopt import search_space
 
-params_range = {
-    'x1': search_space.categorical(['relu', 'tanh']), # list(candidates)
-    'x2': search_space.discrete(-1.0, 1.0, 0.2), # min, max, step
-    'x3': search_space.discrete_int(-4, 2), # min, max
-    'x4': search_space.fixed(1) # a fixed value
-}
+import pandas as pd
+import numpy as np
 
-def objective(params):
-    return params.x2 ** 2
+import lightgbm as lgb
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score
+from sklearn.datasets import load_diabetes
+
+params_range={
+    'lambda_l1': search_space.discrete_int(-8, 2),
+    'lambda_l2': search_space.discrete_int(-8, 2),
+    'num_leaves': search_space.discrete(2, 100, 4),
+    'feature_fraction': search_space.discrete(0.1, 1.0, 0.02),
+    'bagging_fraction': search_space.discrete(0.1, 1.0, 0.02),
+    'bagging_freq': search_space.discrete_int(0,1),
+    'min_child_samples': search_space.discrete_int(1,30),
+}
+cal_time_lst = []
+date_start = None
+
+
+def objective1(params):    
+    diabetes = load_diabetes()
+    X = diabetes.data
+    y = diabetes.target
+    X_train, X_test, y_train, y_test  = train_test_split(X, y, test_size = 0.3, random_state = 0)
+    X_train, X_valid, y_train, y_valid  = train_test_split(X_train, y_train, test_size = 0.3, random_state = 0)
+
+    lgb_train = lgb.Dataset(data=X_train, label=y_train)
+    lgb_valid = lgb.Dataset(data=X_valid, label=y_valid)
+    
+    params ={
+        'lambda_l1': 10**params.lambda_l1,
+        'lambda_l2': 10**params.lambda_l2,
+        'num_leaves': params.num_leaves,
+        'feature_fraction': params.feature_fraction,
+        'bagging_fraction': params.bagging_fraction,
+        'bagging_freq': params.bagging_freq,
+        'min_child_samples': params.min_child_samples,
+        'objective': 'regression',
+        'metric': 'rmse',
+        "verbosity": -1,
+        "seed": 0
+    }
+
+    model = lgb.train(params,
+                  train_set=lgb_train,
+                  valid_sets=lgb_valid,
+                  verbose_eval=False
+                  )
+    
+    y_pred_lgb = model.predict(X_test)
+    fitness = r2_score(y_test, y_pred_lgb)
+    
+    return fitness
+
 
 def main():
-    instance = sseopt.SSEOpt(params_range, objective=objective)
-    best_params = instance.fit() 
-    print(best_params)
+    p_m = 0.10
+    rank_based_mutation = True
+
+    population = 30
+    generation = 50
+
+    instance = sseopt.SSEOpt(params_range, objective=objective1, p_m=p_m, generation=generation, population=population,
+                             rank_based_mutation=rank_based_mutation, history=2, verbose=2, maximizing=True)
+    best_params, best_fitness, best_fitness_lst, worst_fitness_lst, mean_fitness_lst, median_fitness_lst, sd_fitness_lst, search_history_lst = instance.fit()
+    print("best params: ", best_params)
+    print("best fitness: ", best_fitness)
     
-if __name__ == "__main__":
+    visualize_df = pd.DataFrame(instance.visualize(search_history_lst))
+    print(visualize_df)
+
+
+if __name__ == '__main__':
     main()
