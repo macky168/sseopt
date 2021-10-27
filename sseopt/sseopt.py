@@ -16,17 +16,18 @@ from .get_info_about_params import get_max_params, \
 Hyper-parameters need to be explained:
     - params: search_range (explained below)
     - objective: objective function
-    - p_m [float]: mutation rate (default: 0.1=10%)
+    - p_m [float]: mutation rate (default: 0.1 (=10%))
     - generation [int]: generation size (default: 30)
     - population [int]: population size (population: 100)
     - rank_based_mutation [True or False]: 
         whether you use rank-based mutation or normal mutation (default: True)
         - if use rank-based mutation, p_m means max mutation rate
-        - need information, please refer to documents
+        - need more information, please refer to documents
     - early_stopping [True or False]: whether you use early_stopping or not (default: False)
         - if no improve of best_fitness and mean_fitness, terminate.
-    - maximizing [True or False]: maximizing or minimizing problem 
-    - preserving_calc [True or False]: preserving calculation or not
+    - maximizing [True or False]: maximizing or minimizing problem (default: True)
+    - preserving_calc [True or False]: preserving calculation or not (default: True)
+        - preserving the results and reuse it when the same solution is searched
     - history [2, 1, or 0]: outputs the detail or less (default: 0)
         - 2: all information;   best_params, best_fitness, 
                                 best_fitness_lst, worst_fitness_lst, 
@@ -62,6 +63,7 @@ ver2.1. Feb. 21 2021 | error fixed in minimizing problem
 ver2.2. Mar. 04 2021 | error fixed in fixing random-seed
 ver2.3. Jun. 10 2021 | keep order of common schema
 ver2.4. Aug. 07 2021 | rounding error fixed at discrete search space
+ver2.5. Oct. 28 2021 | rounding error fixed at discrete search space
 """
 
 
@@ -118,6 +120,7 @@ class SSEOpt:
         for i in range(self.population):
             temp_params_comb = params_comb()
             for key in self.keys:
+                print(key)
                 setattr(temp_params_comb, key, self.params[key].select())
             current_lst[i] = temp_params_comb
         next_lst = copy.deepcopy(current_lst)

@@ -27,22 +27,25 @@ class discrete:
         self.max_value = max_value
         self.step = step
         
-        float_part_min, _ = math.modf(min_value)
-        float_part_max, _ = math.modf(max_value)
+        float_part_min_value, _ = math.modf(min_value)
+        float_part_max_value, _ = math.modf(max_value)
+        float_part_step, _ = math.modf(step)
         
-        if len(str(float_part_min)) < len(str(float_part_max)):
-            self.rounding_target = max_value
-        else:
-            self.rounding_target = min_value
+        self.rounding_digits = max([len(str(float_part_min_value)), len(str(float_part_max_value)), len(str(float_part_step))])
 
         
     def select(self):
         candidates_lst = []
         
-        value = self.min_value  # rounding
-        while decimal.Decimal(str(value)).quantize(decimal.Decimal(str(self.rounding_target))) <= decimal.Decimal(str(self.max_value)).quantize(decimal.Decimal(str(self.rounding_target))):
-            candidates_lst.append(value)
+        value = self.min_value
+        
+        # mathmetically, the below senteence is the same as "value <= self.max_value"
+        # but we use math.isclose to avoid rounding error with float
+        while value < self.max_value or math.isclose(value, self.max_value, rel_tol=1e-08):
+            candidates_lst.append(round(value, self.rounding_digits))
             value += self.step
+            
+        print(candidates_lst)
         
         return random.choice(candidates_lst)
     
@@ -85,8 +88,8 @@ class discrete:
         candidates_lst = []
     
         value = self.min_value
-        while decimal.Decimal(str(value)).quantize(decimal.Decimal(str(self.rounding_target))) <= decimal.Decimal(str(self.max_value)).quantize(decimal.Decimal(str(self.rounding_target))):
-            candidates_lst.append(value)
+        while value < self.max_value or math.isclose(value, self.max_value, rel_tol=1e-08):
+            candidates_lst.append(round(value, self.rounding_digits))
             value += self.step
         
         return candidates_lst
