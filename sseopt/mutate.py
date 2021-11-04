@@ -1,7 +1,7 @@
 import random
 import copy
 
-CONST = 0.10
+CONST = 0.0
 
 # ---------------------
 # mutate individual
