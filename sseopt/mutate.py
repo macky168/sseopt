@@ -1,7 +1,11 @@
 import random
 import copy
 
+CONST = 0.10
 
+# ---------------------
+# mutate individual
+# ---------------------
 # normal mutation
 def mutate_normal(params_comb_temp, params, keys, rate_of_mutation):
     for key in keys:
@@ -12,14 +16,37 @@ def mutate_normal(params_comb_temp, params, keys, rate_of_mutation):
             # no mutation
     return params_comb_temp
 
-
 # rank-base mutation
-def mutate_rank_base(params_comb_temp, params, keys, max_rate_of_mutation, i, population):
-    rate_of_mutation = (i/population) * max_rate_of_mutation
+def mutate_rank_base(params_comb_temp, params, keys, max_rate_of_mutation, i, i_worst):
+    rate_of_mutation = (i/i_worst) * max_rate_of_mutation + CONST
+    print("p_m: ", rate_of_mutation)
     for key in keys:
         if random.random() < rate_of_mutation:
             setattr(params_comb_temp, key, params[key].mutate(getattr(params_comb_temp, key)))
         else:
             pass
             # no mutation
+    return params_comb_temp
+
+# ---------------------
+# mutate each bit
+# ---------------------
+# normal mutation
+def mutate_normal_each_key(params_comb_temp, params, key, rate_of_mutation):
+    if random.random() < rate_of_mutation:
+        setattr(params_comb_temp, key, params[key].mutate(getattr(params_comb_temp, key)))
+    else:
+        pass
+        # no mutation
+    return params_comb_temp
+
+# rank-base mutation
+def mutate_rank_base_each_key(params_comb_temp, params, key, max_rate_of_mutation, i, i_worst):
+    rate_of_mutation = (i/i_worst) * max_rate_of_mutation + CONST
+    print("p_m: ", rate_of_mutation)
+    if random.random() < rate_of_mutation:
+        setattr(params_comb_temp, key, params[key].mutate(getattr(params_comb_temp, key)))
+    else:
+        pass
+        # no mutation
     return params_comb_temp

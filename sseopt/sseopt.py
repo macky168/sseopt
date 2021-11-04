@@ -120,7 +120,6 @@ class SSEOpt:
         for i in range(self.population):
             temp_params_comb = params_comb()
             for key in self.keys:
-                print(key)
                 setattr(temp_params_comb, key, self.params[key].select())
             current_lst[i] = temp_params_comb
         next_lst = copy.deepcopy(current_lst)
@@ -297,15 +296,24 @@ class SSEOpt:
 
             search_history_lst.append(copy.deepcopy(next_schemata_lst))
 
+            # ---------------------
+            # new individual generation
+            # --------------------- 
             for i in range(self.population):
-                # ---------------------
-                # make individuals by random selection
-                # ---------------------
                 next_lst[i] = self.make_individual(next_schemata_lst[i])
+            
+            """
+            for key in self.keys:
+                print("key:", key)
+                for i in range(self.population):
+                    print(getattr(next_lst[i], key))
+                print("--------------------------")
+            """
 
-                # ---------------------
-                # mutation
-                # ---------------------
+            # ---------------------
+            # mutation
+            # ---------------------
+            for i in range(self.population):
                 if self.rank_based_mutation:
                     next_lst[i] = copy.deepcopy(
                         mutate_rank_base(next_lst[i], self.params, self.keys, self.rate_of_mutation, i, self.population))

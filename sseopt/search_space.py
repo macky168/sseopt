@@ -44,8 +44,6 @@ class discrete:
         while value < self.max_value or math.isclose(value, self.max_value, rel_tol=1e-08):
             candidates_lst.append(round(value, self.rounding_digits))
             value += self.step
-            
-        print(candidates_lst)
         
         return random.choice(candidates_lst)
     
