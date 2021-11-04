@@ -43,7 +43,6 @@ def mutate_normal_each_key(params_comb_temp, params, key, rate_of_mutation):
 # rank-base mutation
 def mutate_rank_base_each_key(params_comb_temp, params, key, max_rate_of_mutation, i, i_worst):
     rate_of_mutation = (i/i_worst) * max_rate_of_mutation + CONST
-    print("p_m: ", rate_of_mutation)
     if random.random() < rate_of_mutation:
         setattr(params_comb_temp, key, params[key].mutate(getattr(params_comb_temp, key)))
     else:
