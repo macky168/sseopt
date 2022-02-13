@@ -65,6 +65,7 @@ ver2.2. Mar. 04 2021 | error fixed in fixing random-seed
 ver2.3. Jun. 10 2021 | keep order of common schema
 ver2.4. Aug. 07 2021 | rounding error fixed at discrete search space
 ver2.5. Oct. 28 2021 | rounding error fixed at discrete search space
+ver2.6. Feb. 13 2022 | rounding error fixed at process visualization
 """
 
 
