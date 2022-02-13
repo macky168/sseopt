@@ -1,6 +1,7 @@
 import copy
 import random
 import datetime
+import math
 
 import numpy as np
 import tensorflow as tf
@@ -385,10 +386,17 @@ class SSEOpt:
             for chromosome_attentioned in range(len(params_dic_value_lst)):
                 for num_in_chromosome in range(len(params_dic_value_lst[chromosome_attentioned])):
                     for pop in range(self.population):
-                        if params_dic_value_lst[chromosome_attentioned][num_in_chromosome] in \
-                                getattr(search_history_lst[gen][pop], self.keys[chromosome_attentioned]):
-                            history_visualized_lst[gen][chromosome_serial_num] \
-                                += 1 / len(getattr(search_history_lst[gen][pop], self.keys[chromosome_attentioned]))
+                        if type(params_dic_value_lst[chromosome_attentioned][num_in_chromosome]) == float:
+                            # float (avoid rounding error)
+                            for hoge in getattr(search_history_lst[gen][pop], self.keys[chromosome_attentioned]):
+                                if math.isclose(params_dic_value_lst[chromosome_attentioned][num_in_chromosome], hoge, rel_tol=1e-08):
+                                    history_visualized_lst[gen][chromosome_serial_num] += 1 / len(getattr(search_history_lst[gen][pop], self.keys[chromosome_attentioned]))
+                        else:
+                            # int, str
+                            if params_dic_value_lst[chromosome_attentioned][num_in_chromosome] in \
+                                    getattr(search_history_lst[gen][pop], self.keys[chromosome_attentioned]):
+                                history_visualized_lst[gen][chromosome_serial_num] \
+                                    += 1 / len(getattr(search_history_lst[gen][pop], self.keys[chromosome_attentioned]))
                     chromosome_serial_num += 1
 
         history_visualized_array = np.array(history_visualized_lst, dtype='float32')
